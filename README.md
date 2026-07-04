@@ -1,5 +1,8 @@
 # about-me
 ## 완료 작업 목록
+
+<img width="626" height="338" alt="about-me" src="https://github.com/user-attachments/assets/6ff93e63-022f-4fb5-b26e-08f6dc84cc0f" />
+
 - 설계
     - [x] 나의 어떤 부분을 소개할 지 결정하기
     - [x] UI 설계하기
