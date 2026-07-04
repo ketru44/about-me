@@ -1,15 +1,61 @@
+/* =========================
+   Design Tokens
+========================= */
+
+:root {
+  --frame-color: #565c63;
+  --board-background: #fff;
+  --board-radius: 30px;
+
+  --text-color: #111;
+  --accent-color: #d93030;
+
+  --board-gap-x: 1.75%;
+  --board-gap-y: 3%;
+
+  --stationary-bottom: calc(var(--board-gap-y) + 10px);
+
+  --postit-width: 180px;
+  --postit-background-start: #f8e072;
+  --postit-background-end: #f5f593;
+
+  --transition-duration: 0.2s;
+}
+
+/* =========================
+   Base
+========================= */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  min-height: 100%;
+}
+
 body {
   position: relative;
-  background: #A8A8A8;
   min-height: 100vh;
-  border-radius: 10px;
+  overflow: hidden;
+
+  background-color: #a8a8a8;
+  color: var(--text-color);
 }
+
+/* =========================
+   Board Frame
+========================= */
 
 .corner {
   position: fixed;
   width: 50px;
   height: 50px;
-  background-color: #565c63;
+  background-color: var(--frame-color);
 }
 
 .corner--top-left {
@@ -32,20 +78,24 @@ body {
   bottom: 0;
 }
 
-div#board {
-	position: fixed;
-	left: 1.75%;
-	top: 3%;
-	width: calc(96.5%);
-	height: calc(94%);
-	background: white;
-  border-radius: 30px;
+#board {
+  position: fixed;
+  inset: var(--board-gap-y) var(--board-gap-x);
+
+  overflow: hidden;
+
+  background-color: var(--board-background);
+  border-radius: var(--board-radius);
 }
 
-#stationary {
+/* =========================
+   Stationery
+========================= */
+
+#stationary,
+.pen-holder {
   position: fixed;
-  left: calc(3% + 15px);
-  bottom: calc(3% + 10px);
+  bottom: var(--stationary-bottom);
 
   display: flex;
   align-items: flex-end;
@@ -54,63 +104,70 @@ div#board {
   z-index: 10;
 }
 
+#stationary {
+  left: calc(3% + 15px);
+}
+
+.pen-holder {
+  left: calc(3% + 220px);
+}
+
+/* Eraser */
+
 #eraser {
   position: relative;
-  width: 200px;
-  height: 60px;
-  border-radius: 5px 5px 0 0;
-  background: #5475fb;
-  font-size: 18px;
+
   display: flex;
   justify-content: center;
-  align-items: center;     
+  align-items: center;
+
+  width: 200px;
+  height: 60px;
+
+  background-color: #5475fb;
+  border-radius: 5px 5px 0 0;
+
+  font-size: 18px;
 }
 
 #eraser::after {
   content: "";
 
   position: absolute;
-  top: 60px;
+  top: 100%;
   left: 1%;
 
   width: 98%;
-  height: 4px;
+  height: 8px;
 
-  border-top: 4px solid #eee;
-  background: #444;
+  background: linear-gradient(
+    to bottom,
+    #eee 0,
+    #eee 4px,
+    #444 4px,
+    #444 8px
+  );
 }
 
-.pen-holder {
-  position: fixed;
-  left: calc(3% + 220px);
-  bottom: calc(3% + 10px);
-
-  display: flex;
-  gap: 20px;
-
-  z-index: 10;
-}
+/* Pens */
 
 .pen {
-  --pen-color: black;
+  --pen-color: #111;
 
   position: relative;
+
   width: 190px;
   height: 30px;
 
-  border: 1px solid #aaa;
-  border-radius: 4px;
-
   background: linear-gradient(
     to right,
-    var(--pen-color) 0,
-    var(--pen-color) 50px,
-    white 50px,
-    white 180px,
-    var(--pen-color) 180px,
-    var(--pen-color) 190px
+    var(--pen-color) 0 50px,
+    #fff 50px 180px,
+    var(--pen-color) 180px 190px
   );
 
+  border: 1px solid #aaa;
+  border-radius: 4px;
   box-shadow: 0 3px 5px rgb(0 0 0 / 20%);
 }
 
@@ -122,13 +179,13 @@ div#board {
   --pen-color: #d93030;
 }
 
+/* =========================
+   Post-it Area
+========================= */
+
 #content-postit {
   position: absolute;
-
-  top: 40px;
-  left: 40px;
-  right: 40px;
-  bottom: 110px;
+  inset: 40px 40px 110px;
 
   font-size: 13px;
 }
@@ -136,37 +193,26 @@ div#board {
 .postit {
   position: absolute;
 
-  width: 180px;
+  width: var(--postit-width);
   min-height: 150px;
   padding: 20px;
 
-  background-color: #f8e57c;
-  background-image: linear-gradient(
+  background: linear-gradient(
     to bottom right,
-    #f8e072,
-    #f5f593
+    var(--postit-background-start),
+    var(--postit-background-end)
   );
 
-  box-shadow: 0 8px 10px -7px #999;
   border-bottom-right-radius: 60px 10px;
+  box-shadow: 0 8px 10px -7px #999;
 
   transition:
-    transform 0.2s ease,
-    box-shadow 0.2s ease;
+    transform var(--transition-duration) ease,
+    box-shadow var(--transition-duration) ease;
 }
 
-p {
-  margin: 0;
-  padding: 0;
-  line-height: 1.5;
-}
-
-h3 {
-  margin: 0;
-  padding: 0;
-  font-size: 140%;
-  font-weight: normal;
-  line-height: 1.5;
+.postit:hover {
+  box-shadow: 0 12px 16px -8px rgb(0 0 0 / 35%);
 }
 
 .postit:nth-child(1) {
@@ -191,4 +237,81 @@ h3 {
   top: 260px;
   left: 550px;
   transform: rotate(-3deg);
+}
+
+/* =========================
+   Typography
+========================= */
+
+p,
+h3 {
+  margin: 0;
+  padding: 0;
+  line-height: 1.5;
+}
+
+h3 {
+  font-size: 1.4em;
+  font-weight: 400;
+}
+
+/* =========================
+   Board Links
+========================= */
+
+#board a {
+  position: absolute;
+  z-index: 20;
+
+  display: inline-block;
+
+  color: var(--text-color);
+  font-family: "Indie Flower", cursive;
+  font-size: clamp(48px, 5vw, 70px);
+  font-weight: 400;
+  font-style: normal;
+  text-decoration: none;
+
+  transition:
+    color var(--transition-duration) ease,
+    transform var(--transition-duration) ease;
+}
+
+#board a::after {
+  content: "";
+
+  position: absolute;
+  bottom: 2px;
+  left: 0;
+
+  width: 0;
+  height: 3px;
+
+  background-color: currentColor;
+  border-radius: 999px;
+
+  transition: width 0.25s ease;
+}
+
+#board a:hover::after,
+#board a:focus-visible::after {
+  width: 100%;
+}
+
+#board a:focus-visible {
+  outline: 3px dashed currentColor;
+  outline-offset: 8px;
+}
+
+#github-link {
+  top: 300px;
+  right: 20px;
+
+  transform: rotate(-5deg);
+}
+
+#github-link:hover,
+#github-link:focus-visible {
+  color: var(--accent-color);
+  transform: rotate(-5deg) scale(1.05);
 }
